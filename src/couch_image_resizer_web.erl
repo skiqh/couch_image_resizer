@@ -38,8 +38,8 @@ loop(Req) ->
         case string:tokens(RawPath, "/") of
         [_DbName, _DocId, _AttName] ->
             Scheme = ?a2l(Req:get(scheme)),
-            Host = Req:get_header_value("host"),
-            Url = Scheme ++ "://" ++ Host ++ RawPath,
+            Host = couch_image_resizer:get_app_env(host, Scheme ++ "://" ++ Req:get_header_value("host")),
+            Url = Host ++ RawPath,
             Method2 = ?l2a(string:to_lower(?a2l(Req:get(method)))),
 
             ReqHeaders = case Req:get_header_value("if-none-match") of
